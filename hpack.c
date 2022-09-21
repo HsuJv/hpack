@@ -835,7 +835,7 @@ static int hpack_encode_str(hpack_stream_t *in, hpack_stream_t *out, byte split)
     int len = 0;
     HANDLE_ERROR(hpack_strlen(in, split, &len));
 
-    int encoded_len =hpack_huffman_calc_encode_len(in, len);
+    int encoded_len = hpack_huffman_calc_encode_len(in, len);
 
     if (encoded_len < len) {
         HANDLE_ERROR(hpack_encode_int(encoded_len, HPACK_M_LITERAL, HPACK_F_LITERAL_HUFFMAN, out));
