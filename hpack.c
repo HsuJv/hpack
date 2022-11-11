@@ -556,14 +556,13 @@ int hpack_write_string(hpack_stream_t *s, const byte *str) { return hpack_write_
 
 int hpack_erase_last_value(hpack_stream_t *s) {
     int off = s->off;
-    while (off && s->buf[off--] != SPLIT_1)
+    while (off && s->buf[--off] != SPLIT_1)
         ;
     // if (off == 0), then it means that either we can't find the SPLIT_1,
-    // or the SPLIT_1 locates @ index 1
-    // since we don't have a key that contains only 1 char
-    // we can simplify the test to (off != 0)
+    // or the SPLIT_1 locates @ index 0
+    // which definitely a wrong case
     if (hpack_unlikely(!off)) return HPACK_ERROR_DECODE_ERROR;
-    s->off = off + 2;  // skip the SPLIT_1
+    s->off = off + 1;  // skip the SPLIT_1
     return HPACK_ERROR_NO_ERR;
 }
 
